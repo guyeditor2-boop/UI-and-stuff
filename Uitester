@@ -1,0 +1,204 @@
+--[[
+    Example Hub
+    Built with the public TransparentUI library
+
+    UI Library:
+    https://raw.githubusercontent.com/guyeditor2-boop/UI-and-stuff/refs/heads/main/Library/UI.luau
+]]
+
+local Library = loadstring(game:HttpGet(
+    "https://raw.githubusercontent.com/guyeditor2-boop/UI-and-stuff/refs/heads/main/Library/UI.luau"
+))()
+
+--==================================================
+-- WINDOW
+--==================================================
+
+local Window = Library:CreateWindow({
+    Title = "Example Hub",
+    Size = UDim2.fromOffset(560, 450)
+})
+
+--==================================================
+-- MAIN TAB
+--==================================================
+
+local Main = Window:CreateTab("Main")
+
+Main:AddSection("General")
+
+Main:AddLabel(
+    "Welcome to the example hub. This demonstrates the available TransparentUI components."
+)
+
+Main:AddButton({
+    Title = "Test Button",
+
+    Callback = function()
+        Window:Notify({
+            Title = "Button",
+            Content = "The button was successfully pressed.",
+            Duration = 3
+        })
+    end
+})
+
+Main:AddToggle({
+    Title = "Example Toggle",
+    Default = false,
+
+    Callback = function(enabled)
+        print("Example Toggle:", enabled)
+
+        Window:Notify({
+            Title = "Toggle",
+            Content = enabled and "Enabled" or "Disabled",
+            Duration = 2
+        })
+    end
+})
+
+--==================================================
+-- PLAYER TAB
+--==================================================
+
+local Player = Window:CreateTab("Player")
+
+Player:AddSection("Movement")
+
+Player:AddSlider({
+    Title = "WalkSpeed",
+
+    Min = 16,
+    Max = 200,
+    Default = 16,
+
+    Callback = function(value)
+        local Character = game.Players.LocalPlayer.Character
+        local Humanoid = Character and Character:FindFirstChildOfClass("Humanoid")
+
+        if Humanoid then
+            Humanoid.WalkSpeed = value
+        end
+    end
+})
+
+Player:AddToggle({
+    Title = "Infinite Jump",
+    Default = false,
+
+    Callback = function(enabled)
+        print("Infinite Jump:", enabled)
+
+        if enabled then
+            Window:Notify({
+                Title = "Infinite Jump",
+                Content = "Enabled",
+                Duration = 2
+            })
+        end
+    end
+})
+
+Player:AddButton({
+    Title = "Reset Character",
+
+    Callback = function()
+        local Character = game.Players.LocalPlayer.Character
+        local Humanoid = Character and Character:FindFirstChildOfClass("Humanoid")
+
+        if Humanoid then
+            Humanoid.Health = 0
+        end
+    end
+})
+
+--==================================================
+-- SETTINGS TAB
+--==================================================
+
+local Settings = Window:CreateTab("Settings")
+
+Settings:AddSection("Configuration")
+
+Settings:AddDropdown({
+    Title = "Mode",
+
+    Values = {
+        "Normal",
+        "Fast",
+        "Performance"
+    },
+
+    Default = "Normal",
+
+    Callback = function(value)
+        print("Selected mode:", value)
+    end
+})
+
+Settings:AddTextbox({
+    Placeholder = "Enter your username...",
+
+    Default = "",
+
+    Callback = function(text)
+        print("Entered:", text)
+    end
+})
+
+Settings:AddKeybind({
+    Title = "UI Keybind",
+
+    Default = Enum.KeyCode.RightShift,
+
+    Callback = function()
+        print("Keybind pressed")
+    end
+})
+
+Settings:AddButton({
+    Title = "Show Notification",
+
+    Callback = function()
+        Window:Notify({
+            Title = "Example Hub",
+            Content = "Notification system is working.",
+            Duration = 4
+        })
+    end
+})
+
+--==================================================
+-- INFORMATION TAB
+--==================================================
+
+local Info = Window:CreateTab("Info")
+
+Info:AddSection("About")
+
+Info:AddLabel(
+    "This hub is an example implementation using the public TransparentUI library."
+)
+
+Info:AddLabel(
+    "The interface automatically adapts its size for smaller touch devices."
+)
+
+Info:AddButton({
+    Title = "Print UI Status",
+
+    Callback = function()
+        print("Example Hub is running.")
+    end
+})
+
+--==================================================
+-- STARTUP NOTIFICATION
+--==================================================
+
+Window:Notify({
+    Title = "Example Hub",
+    Content = "UI loaded successfully.",
+    Duration = 4
+})
